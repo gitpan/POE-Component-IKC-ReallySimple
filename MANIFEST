@@ -1,0 +1,7 @@
+LICENSE
+Makefile.PL
+README
+lib/POE/Component/IKC/ReallySimple.pm
+MANIFEST
+VERSION
+t/01clientserver.t

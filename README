@@ -1,0 +1,75 @@
+NAME
+    POE::Component::IKC::ReallySimple - POE Component for simple
+    inter-kernel communication
+
+SYNOPSIS
+        use POE qw(Component::IKC::ReallySimple);
+
+        # in server
+        poemsg_receive( ReceiveState => sub { print shift; } );
+        $poe_kernel->run();
+
+        # in client
+        poemsg_send('HI');
+
+DESCRIPTION
+    POE::Component::IKC::ReallySimple tries to make inter-kernel
+    communication very simple. POE::Component::IKC is great but it can be a
+    lot of setup for simple projects. This module hides the ick and
+    complication of inter-kernel messaging.
+
+    The synopsis really says it all. "poemsg_receive" sets a program up to
+    receive simple messages. "poemsg_send" sends a message. This is UDP-like
+    in that there is no real error checking to ensure the data goes through.
+    At this time, there is also no way to tell where your data came from.
+
+EXPORTED FUNCTIONS
+  poemsg_send
+
+            poemsg_send($data);
+            poemsg_send($data,$server_ip);
+
+        Sends a message to a POE program. By default, it is assumed that the
+        program is listening on 127.0.0.1. this assumption may be modified
+        by passing a second parameter which is a dotted quad ip address.
+
+        Returns 1 if a successful server connection was made. Returns 0 if
+        the server could not be contacted.
+
+  poemsg_receive
+
+            poemsg_receive( ReceiveState => \&subroutine );
+            poemsg_receive( ReceiveState => \&subroutine,
+                                ServerIP => $server_ip,
+                              ServerPort => $server_port
+                          );
+
+        Listen and wait for incoming messages. "&subroutine" will be passed
+        the transmitted data when a message is received. The only guarantee
+        about the incoming data is that it is a defined scalar.
+
+        Parameters: "ReceiveState" takes a code reference which will receive
+        passed data as indicated above. This parameter is not optional.
+        "ServerIP" sets the ip address to which the server binds. This
+        parameter is optional and defaults to "127.0.0.1". "ServerPort" set
+        the socket port to which the server binds. This parameter is
+        optional and binds "31338".
+
+        "$poe_kernel->run()" must still be done in the server. sometime
+        soon, this will be a little bit easier.
+
+AUTHOR
+            Matt Cashner
+            CPAN ID: MCASHNER
+            eek+cpan@eekeek.org
+            http://eekeek.org/perl/
+
+COPYRIGHT
+    Copyright (c) 2001 Matt Cashner. All rights reserved. This program is
+    free software licensed under the...
+
+            The MIT License
+
+    The full text of the license can be found in the LICENSE file included
+    with this module.
+
